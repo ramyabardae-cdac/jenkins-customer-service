@@ -47,11 +47,20 @@ public class CustomerRepositoryTest {
         assertThat(foundCustomer.get().getFirstName()).isEqualTo("John");
     }
 
-    @Test
-    public void testFindByCity() {
-        customerRepository.save(customer);
-        List<Customer> customers = customerRepository.findByCity("New York");
-        assertThat(customers).isNotEmpty();
-        assertThat(customers.size()).isEqualTo(1);
-    }
+
+@Test
+public void testFindByCity() {
+    customerRepository.deleteAll();
+
+    customer.setEmail("john-test@example.com");
+    customerRepository.save(customer);
+
+    List<Customer> customers = customerRepository.findByCity("New York");
+
+    assertThat(customers).isNotEmpty();
+    assertThat(customers)
+            .extracting(Customer::getEmail)
+            .contains("john-test@example.com");
+  }
+
 }
